@@ -9,7 +9,8 @@ then
   dry_run_flag="--dry-run"
 fi
 
-last_run_time="$(cat data/.lastrun 2> /dev/null)"
+mkdir -p /certs/
+last_run_time="$(cat /certs/.lastrun 2> /dev/null)"
 let "since_last_run = $( date +%s ) - last_run_time"
 if [[ "$since_last_run" -lt "$request_limit" ]]
 then
@@ -18,12 +19,11 @@ then
 fi
 
 echo "Updating certs with params dry_run:'$dry_run_flag', email:'$EMAIL', domains:'$DOMAINS'"
-./venv/bin/certbot certonly --config-dir data/config --work-dir data/work --logs-dir data/log \
-    --fullchain-path /certs \
+./venv/bin/certbot certonly --config-dir /certs/config --work-dir ./work --logs-dir ./log \
     $dry_run_flag \
     --standalone \
     -n --agree-tos \
     -m "$EMAIL" \
     -d "$DOMAINS"
 
-date +%s > data/.lastrun
+date +%s > /certs/.lastrun

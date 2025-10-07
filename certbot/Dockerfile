@@ -19,8 +19,10 @@ WORKDIR /certbot
 COPY --from=builder /certbot/dist ./dist
 COPY entrypoint.sh .
 RUN apk update && apk add --no-cache python3 py3-pip && \
-    python -m venv venv && . ./venv/bin/activate && python -m pip install dist/*whl && \ 
-    addgroup -S certbot && adduser -S certbot -G certbot && chown -Rv certbot:certbot /certbot && \
+    python -m venv venv && . ./venv/bin/activate && python -m pip install dist/*whl && rm -rfv dist/*whl && \
+    mkdir -p /certs && \
+    addgroup -S certbot && adduser -S certbot -G certbot && \
+    chown -Rv certbot:certbot /certbot /certs && \
     chmod a=rwx ./entrypoint.sh
 USER certbot
 
