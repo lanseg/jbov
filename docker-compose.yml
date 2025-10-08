@@ -1,0 +1,47 @@
+volumes:
+  certs:
+
+services:
+  certbot:
+    build: ./certbot
+    ports:
+      - 80:80
+    volumes:
+      - certs:/certs
+    restart: no
+    environment:
+      - DRY_RUN=true
+      - EMAIL=
+      - DOMAINS=
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+        reservations:
+          memory: 16M
+
+  ocserv:
+    build: ./ocserv
+    ports:
+      - 443:443
+    volumes:
+      - certs:/certs
+    restart: always
+    environment:
+      - CAMOUFLAGE_SECRET=mysecretkey
+      - DOMAIN=
+      - MAX_CLIENTS=10
+      - IPV4_NETWORK=10.10.11.0/24
+    depends_on:
+      certbot:
+        condition: service_completed_successfully
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+        reservations:
+          memory: 16M
+    sysctls:
+      - net.ipv4.ip_forward=1
+    cap_add:
+      - NET_ADMIN
