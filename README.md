@@ -7,15 +7,15 @@ for the VPNs.
 
 As everywhere in Docker, configuration is done with env variables.
 
-|Name             |Values    |Services|Description                                                 |
-|-----------------|----------|--------|------------------------------------------------------------|
-|DRY_RUN          |true/false|certbot |Makes certbot simulate certificate retrieval, for troubleshouting or DNS checks|
-|DOMAINS          |comma-separated list of domain names|certbot|Certbot will get certificates for these domains|
-|EMAIL            |email     |certbot |Optional. Letsencrypt will add this email to the certificate |
-|CAMOUFLAGE_SECRET|string    |ocserv  |Part that goes as a query param to confuse some traffic analysers, e.g. "https://your.server.com/?CAMOUFLAGE_SECRET"|
-|DOMAIN|string|ocserv|Domain name for the VPN server. There must be a certificate issued for this domain and available at "/certs/config/live/"|
-|MAX_CLIENTS|number|ocserv|Maximum number of connection the VPN server can handle
-|IPV4_NETWORK|IPV4 netmask|ocserv|Network for the clients.|
+|Service |Param             |Values      |Description                                                 |
+|--------|------------------|------------|------------------------------------------------------------|
+|certbot |DRY_RUN           |true/false  |Makes certbot simulate certificate retrieval, for troubleshouting or DNS checks|
+|certbot |DOMAINS           |comma-separated list of domain names|Certbot will get certificates for these domains|
+|certbot |EMAIL             |email       |Optional. Letsencrypt will add this email to the certificate |
+|all vpns|DOMAIN            |string      |Domain name for the VPN server. There must be a certificate issued for this domain and available at "/certs/config/live/"|
+|all vpns|MAX_CLIENTS       |number      |Maximum number of connection the VPN server can handle|
+|all vpns|IPV4_NETWORK      |IPV4 netmask|Network for the clients.|
+|ocserv  |CAMOUFLAGE_SECRET |string      |Part that goes as a query param to confuse some traffic analysers, e.g. "https://your.server.com/?CAMOUFLAGE_SECRET"|
 
 ## Security
 
