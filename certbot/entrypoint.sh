@@ -26,4 +26,9 @@ echo "Updating certs with params dry_run:'$dry_run_flag', email:'$EMAIL', domain
     -m "$EMAIL" \
     -d "$DOMAINS"
 
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    exit $exit_code
+fi
+
 date +%s > /certs/.lastrun

@@ -1,18 +1,16 @@
-volumes:
-  certs:
-
 services:
   certbot:
     build: ./certbot
     ports:
       - 80:80
     volumes:
-      - certs:/certs
+      - ./config/certs:/certs
     restart: no
+    env_file: ./.env
     environment:
-      - DRY_RUN=true
-      - EMAIL=
-      - DOMAINS=
+      - DRY_RUN=${DRY_RUN}
+      - EMAIL=${CERTBOT_EMAIL}
+      - DOMAINS=${CERTBOT_DOMAINS}
     deploy:
       resources:
         limits:
@@ -25,11 +23,14 @@ services:
     ports:
       - 443:443
     volumes:
-      - certs:/certs
+      - ./config/certs:/certs
+      - ./config/ocserv-passwd:/config/ocserv-passwd
     restart: always
+    env_file: ./.env
     environment:
-      - CAMOUFLAGE_SECRET=mysecretkey
-      - DOMAIN=
+      - CAMOUFLAGE_SECRET=${CAMOUFLAGE_SECRET:-mysecretkey}
+      - DOMAIN=${OCSERV_DOMAIN}
+      - PASSWD=${OCSERV_PASSWD}
       - MAX_CLIENTS=10
       - IPV4_NETWORK=10.10.11.0/24
     depends_on:
