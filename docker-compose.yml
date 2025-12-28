@@ -4,7 +4,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./config/certs:/certs
+      - ./volumes/certs:/certs
     restart: no
     env_file: ./.env
     environment:
@@ -23,14 +23,14 @@ services:
     ports:
       - 443:443
     volumes:
-      - ./config/certs:/certs
-      - ./config/ocserv-passwd:/config/ocserv-passwd
+      - ./volumes/certs:/certs
+      - ./volumes/ocserv:/config
     restart: always
     env_file: ./.env
     environment:
       - CAMOUFLAGE_SECRET=${CAMOUFLAGE_SECRET:-mysecretkey}
-      - DOMAIN=${OCSERV_DOMAIN}
-      - PASSWD=${OCSERV_PASSWD}
+      - DOMAIN=${DOMAIN}
+      - PASSWD=/config/ocserv-passwd
       - MAX_CLIENTS=10
       - IPV4_NETWORK=10.10.11.0/24
     depends_on:
