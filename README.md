@@ -10,8 +10,8 @@ As everywhere in Docker, configuration is done with env variables.
 |Service |Param             |Values      |Description                                                 |
 |--------|------------------|------------|------------------------------------------------------------|
 |certbot |DRY_RUN           |true/false  |Makes certbot simulate certificate retrieval, for troubleshouting or DNS checks|
-|certbot |DOMAINS           |comma-separated list of domain names|Certbot will get certificates for these domains|
-|certbot |EMAIL             |email       |Optional. Letsencrypt will add this email to the certificate |
+|certbot |CERTBOT_DOMAINS   |comma-separated list of domain names|Certbot will get certificates for these domains|
+|certbot |CERTBOT_EMAIL     |email       |Optional. Letsencrypt will add this email to the certificate |
 |all vpns|DOMAIN            |string      |Domain name for the VPN server. There must be a certificate issued for this domain and available at "/certs/config/live/"|
 |all vpns|MAX_CLIENTS       |number      |Maximum number of connection the VPN server can handle|
 |all vpns|IPV4_NETWORK      |IPV4 netmask|Network for the clients.|
@@ -20,6 +20,11 @@ As everywhere in Docker, configuration is done with env variables.
 ## Security
 
 Non-root user for the service in a container. No hardening or extended protection measures.
+
+## ocserv
+
+* Adding a user: ```docker compose exec ocserv /ocserv/dist/bin/ocpasswd -c /config/ocserv-passwd USER_NAME```
+* Show connections: ```docker compose exec ocserv /ocserv/dist/bin/occtl show users```
 
 ## Plans
 
